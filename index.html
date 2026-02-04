@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="./favicon.png">
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>lozen.dev</title>
     
@@ -55,13 +55,14 @@
 <script type="importmap">
 {
   "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4"
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0"
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body>
     <div id="root"></div>
@@ -69,12 +70,12 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // --- CONSTANTS ---
+        // --- TYPES & CONSTANTS ---
+        
         const SlideId = {
           FRONT: 'frnt',
           ABOUT: 'about',
-          BILLION: 'billion $ prjkts',
-          LATEST: 'latest prjkt'
+          MIGRATED: 'migrated',
         };
 
         const WALLET_ADDRESS = "6QUbbx1yk9btVR64hVbQGDAU4o5Tn8V8L8jZuxCHqdjn";
@@ -82,17 +83,16 @@
         const NAV_ITEMS = [
           { id: SlideId.FRONT, label: 'home' },
           { id: SlideId.ABOUT, label: 'about' },
-          { id: SlideId.BILLION, label: 'billion $ prjkts' },
-          { id: SlideId.LATEST, label: 'latest prjkt' },
+          { id: SlideId.MIGRATED, label: 'migrated prjkts' },
         ];
 
         const IMAGES = {
           PANDA_LOGO: "https://i.postimg.cc/mD47fnCv/pandalogo.png", 
           DARK_PANDA: "https://i.postimg.cc/VNRc4QNd/darkpanda.png", 
-          PLACEHOLDER_TECH: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop",
         };
 
-        // --- ICONS (Inline SVGs to avoid dependencies) ---
+        // --- ICONS (Inline SVGs) ---
+        
         const Icon = ({ path, className, ...props }) => (
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -108,13 +108,11 @@
 
         const ArrowUpRight = (props) => <Icon path={<><path d="M7 7h10v10" /><path d="M7 7l10 10" /></>} {...props} />;
         const ArrowRight = (props) => <Icon path={<><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></>} {...props} />;
-        const Gem = (props) => <Icon path={<><path d="M6 3h12l4 6-10 13L2 9Z" /><path d="M11 3 8 9l4 13 4-13-3-6" /><path d="M2 9h20" /></>} {...props} />;
         const Twitch = (props) => <Icon path={<path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7" />} {...props} />;
         const Send = (props) => <Icon path={<><path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" /></>} {...props} />;
         const Copy = (props) => <Icon path={<><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></>} {...props} />;
         const Check = (props) => <Icon path={<path d="M20 6 9 17l-5-5" />} {...props} />;
         
-        // Custom X Icon
         const XIcon = ({ size, className }) => (
           <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -172,7 +170,7 @@
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 top-2 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
-                    <span className="font-mono text-xs text-white/50 uppercase tracking-widest">status: offlineg</span>
+                    <span className="font-mono text-xs text-white/50 uppercase tracking-widest">status: offline</span>
                 </div>
                 <button onClick={onNext} className="group flex items-center justify-center w-12 h-12 bg-dark-gray border border-white/10 rounded-xl hover:border-cyber/50 hover:bg-white/5 transition-all duration-300" aria-label="Next slide">
                     <ArrowRight className="w-5 h-5 text-white group-hover:text-cyber transition-colors" />
@@ -233,8 +231,8 @@
                 <div className="md:col-span-6 flex flex-col justify-center items-start h-full pointer-events-auto pb-20">
                   <h2 className="font-mono text-[10px] md:text-xs text-white uppercase tracking-wide mb-4">vibe, gfx and devving coins</h2>
                   <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter leading-[0.9] mb-8">lozen.dev</h1>
-                  <a href="#" className="group flex items-center gap-2 text-cyber text-lg md:text-xl font-mono uppercase tracking-widest transition-all duration-300">
-                    <span className="bg-clip-text text-transparent bg-cyber group-hover:bg-gradient-to-r group-hover:from-cyber group-hover:to-white transition-all duration-300">view past projects</span>
+                  <a href="https://x.com/lozendev" target="_blank" rel="noreferrer" className="group flex items-center gap-2 text-cyber text-lg md:text-xl font-mono uppercase tracking-widest transition-all duration-300">
+                    <span className="bg-clip-text text-transparent bg-cyber group-hover:bg-gradient-to-r group-hover:from-cyber group-hover:to-white transition-all duration-300">Follow X</span>
                     <ArrowUpRight className="w-5 h-5 text-cyber group-hover:text-white transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 </div>
@@ -243,11 +241,11 @@
                       <span className="font-mono text-xs text-white/50 uppercase tracking-widest">socials</span>
                       <div className="flex flex-row gap-4">
                         {[
-                          { Icon: XIcon, href: 'https://x.com/LozenDev' },
+                          { Icon: XIcon, href: 'https://x.com/lozendev' },
                           { Icon: Twitch, href: 'https://www.twitch.tv/lozendev' },
                           { Icon: Send, href: 'https://t.me/lozendev' }
                         ].map(({ Icon, href }, idx) => (
-                          <a key={idx} href={href} className="group flex items-center justify-center w-12 h-12 bg-dark-gray border border-white/10 rounded-xl hover:border-cyber/50 hover:bg-white/5 transition-all duration-300">
+                          <a key={idx} href={href} target="_blank" rel="noreferrer" className="group flex items-center justify-center w-12 h-12 bg-dark-gray border border-white/10 rounded-xl hover:border-cyber/50 hover:bg-white/5 transition-all duration-300">
                             <Icon size={20} className="text-white group-hover:text-cyber transition-colors" />
                           </a>
                         ))}
@@ -264,7 +262,7 @@
                         {copied ? (<Check className="w-3 h-3 text-green-400" />) : (<Copy className="w-3 h-3 text-cyber group-hover:text-white transition-colors" />)}
                     </button>
                     <span>{', '}</span>
-                    <a href="https://axiom.trade/@lozendev" target="_blank" rel="noreferrer" className="group inline-flex items-center">
+                    <a href="https://axiom.trade" target="_blank" rel="noreferrer" className="group inline-flex items-center">
                         <span className="bg-clip-text text-transparent bg-cyber group-hover:bg-gradient-to-r group-hover:from-cyber group-hover:to-white transition-all duration-300">!axiom</span>
                     </a>
                     <span>{' }'}</span>
@@ -272,7 +270,7 @@
                 </div>
                 <div className="max-w-[320px] pointer-events-auto">
                   <p className="font-mono text-[10px] md:text-xs text-white uppercase leading-relaxed tracking-wide text-justify">
-                    launching a variety of hype/lore/trash coins like any dev. occasionally launching planned coins <Gem className="inline w-3 h-3 text-cyber mx-1"/> with a website and some marketing material prepped. These will be added to the <span className="bg-gradient-to-r from-purple-400 to-cyber bg-clip-text text-transparent font-bold">billion dollar project.</span>
+                    launching a variety of hype/lore/trash coins like all devs. occasionally, when inspiration hits, ill make coins with apps + web
                   </p>
                 </div>
               </div>
@@ -295,7 +293,7 @@
                 <h1 className="text-5xl md:text-8xl font-extrabold text-white tracking-tighter mb-8 md:mb-12">deets</h1>
                 <p className="font-mono text-xs md:text-sm text-white/80 uppercase leading-loose max-w-2xl mb-12">
                   An old BNB degen who helped multiple projects scale into the multi-million-dollar market cap range. Being away from the scene for quite some time, I’m starting from zero again—this time with a deliberately unreasonable objective: launching a $1B market cap token. I’m committed to learning relentlessly in pursuit of achieving this goal. If you follow my progress and track the work, my aim is to reward your early attention by creating real upside along the way.<br /><br />
-                  Couple launch rules: No bundles. Minimal supply, if any.
+                  Couple launch rules: <span className="bg-gradient-to-r from-cyber via-purple-400 to-cyber bg-clip-text text-transparent font-bold">No bundles. Minimal supply, if any.</span>
                 </p>
                 <button onClick={handleCopy} className="group relative inline-flex items-center gap-3 px-6 py-4 bg-transparent border border-cyber/30 hover:border-cyber text-cyber hover:bg-cyber/10 transition-all duration-300 rounded-none uppercase font-mono text-xs tracking-widest">
                   <span className="opacity-70">Dev wallet:</span>
@@ -310,34 +308,14 @@
           );
         };
 
-        const BillionSlide = () => {
+        const MigratedSlide = () => {
           return (
             <div className="relative w-full h-full flex flex-col justify-center items-center text-center">
               <div className="z-10 animate-pulse">
-                <h2 className="font-mono text-xs md:text-sm bg-gradient-to-r from-cyber via-purple-400 to-cyber bg-clip-text text-transparent font-bold uppercase tracking-[0.2em] mb-6">billion $ prjkts</h2>
-                <h1 className="text-6xl md:text-9xl font-extrabold text-white tracking-tighter">COMING SOON</h1>
+                <h2 className="font-mono text-xs md:text-sm bg-gradient-to-r from-cyber via-purple-400 to-cyber bg-clip-text text-transparent font-bold uppercase tracking-[0.2em] mb-6">latest migrations</h2>
+                <h1 className="text-6xl md:text-9xl font-extrabold text-white tracking-tighter">none yet :(</h1>
               </div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-32 bg-cyber/5 blur-3xl rounded-full pointer-events-none"></div>
-            </div>
-          );
-        };
-
-        const LatestSlide = () => {
-          return (
-            <div className="relative w-full h-full flex items-center px-8 md:px-24">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full items-center">
-                <div className="flex flex-col items-start z-10">
-                  <h2 className="font-mono text-xs md:text-sm bg-gradient-to-r from-cyber via-purple-400 to-cyber bg-clip-text text-transparent font-bold uppercase tracking-[0.2em] mb-4">latest prjkt</h2>
-                  <h1 className="text-5xl md:text-8xl font-extrabold text-white tracking-tighter leading-none mb-6">COMING SOON</h1>
-                  <p className="font-mono text-sm text-white/60 uppercase">Coming Soon</p>
-                </div>
-                <div className="relative w-full aspect-square md:aspect-video bg-dark-gray/50 border border-white/5 overflow-hidden group">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-mono text-white/20 text-xs uppercase tracking-widest group-hover:text-cyber/50 transition-colors">[ Encrypted Data Block ]</span>
-                  </div>
-                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_4px] opacity-20 pointer-events-none"></div>
-                </div>
-              </div>
             </div>
           );
         };
@@ -376,8 +354,7 @@
             switch (displaySlide) {
               case SlideId.FRONT: return <FrontSlide />;
               case SlideId.ABOUT: return <AboutSlide />;
-              case SlideId.BILLION: return <BillionSlide />;
-              case SlideId.LATEST: return <LatestSlide />;
+              case SlideId.MIGRATED: return <MigratedSlide />;
               default: return <FrontSlide />;
             }
           };
@@ -398,5 +375,6 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
